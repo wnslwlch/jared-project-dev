@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+
+        <title>{% block title %}Jared Project{% endblock %}</title>
+        {% block stylesheets %}
+            {#TODO add font to Encore#}
+            <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+            {{encore_entry_link_tags('app')}}
+
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+        {% endblock %}
+    </head>
+    <body class="dark-edition">
+    <div class="wrapper ">
+        <div class="sidebar" data-color="purple" data-background-color="black" data-image="../dist/img/side_bar_tour_2.jpg">
+
+            <div class="logo">
+                <a href="{{ path('home_index') }}" class="simple-text logo-normal text-rose">
+                    Jared Project
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav active">
+                    <li class="nav-item {% if app.request.get('_route') == 'dashboard_index' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('dashboard_index') }}">
+                            <i class="material-icons">dashboard</i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if app.request.get('_route') == 'event_calendar' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('event_calendar') }}">
+                            <i class="material-icons">calendar_today</i>
+                            <p>Calendar</p>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if app.request.get('_route') == 'contact_index' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('contact_index') }}">
+                            <i class="material-icons">contacts</i>
+                            <p>Contacts</p>
+                        </a>
+                    </li>
+                    <!-- your sidebar here -->
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
+                <div class="container-fluid">
+                    {#TODO Custom link
+                    <div class="navbar-wrapper">
+                        <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
+                    </div>#}
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="navbar-toggler-icon icon-bar"></span>
+                        <span class="navbar-toggler-icon icon-bar"></span>
+                        <span class="navbar-toggler-icon icon-bar"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end">
+                        <ul class="navbar-nav">
+                            {# TODO Notification tour
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">notifications</i>
+                                    <span class="notification">5</span>
+                                    <p class="d-lg-none d-md-block">
+                                        Some Actions
+                                    </p>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="javascript:void(0)">Mike John responded to your email</a>
+                                    <a class="dropdown-item" href="javascript:void(0)">You have 5 new tasks</a>
+                                    <a class="dropdown-item" href="javascript:void(0)">You're now friend with Andrew</a>
+                                    <a class="dropdown-item" href="javascript:void(0)">Another Notification</a>
+                                    <a class="dropdown-item" href="javascript:void(0)">Another One</a>
+                                </div>
+                            </li>
+                            #}
+                            {% if app.user is not null %}
+                            <li>
+                                Hello <span class="text-rose user-is-log">{{ app.user.nickname }}</span> !
+                            </li>
+                            {% endif %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">person</i>
+                                    <p class="d-lg-none d-md-block">
+                                        Account
+                                    </p>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    {% if app.user is null %}
+                                    <a class="dropdown-item" href="{{ path('security_login') }}">Sign in</a>
+                                    <a class="dropdown-item" href="{{ path('security_register') }}">Register</a>
+                                    {% else %}
+                                    <a class="dropdown-item" href="{{ path('user_show', {'id': app.user.id}) }}">My profile</a>
+                                    <a class="dropdown-item" href="{{ path('security_logout') }}">Sign out</a>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- End Navbar -->
+            <div class="content">
+                <div class="container-fluid">
+                    <!-- Flash message -->
+                    {% for type, messages in app.session.flashBag.all %}
+                        {% for message in messages %}
+                            {% if type == 'error' %}
+                                {% set type = 'danger' %}
+                            {% endif %}
+                            <div class="alert alert-{{ type }} mt-2">
+                                {{ message|raw }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    <!-- your content here -->
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="container-fluid">
+                    {#TODO Custom link
+                    <nav class="float-left">
+                        <ul>
+                            <li>
+                                <a href="https://www.creative-tim.com">
+                                    Creative Tim
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>#}
+                    <div class="copyright float-right">
+                        &copy;
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>, made with <i class="material-icons">favorite</i> by
+                        <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
+                    </div>
+                    <!-- your footer here -->
+                </div>
+            </footer>
+        </div>
+    </div>
+        {% block javascripts %}
+
+            {{ encore_entry_script_tags('app') }}
+            {#TODO base scripts#}
+            <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+            <script type="text/javascript">
+                document.addEventListener('DOMContentLoaded', () => {
+                    var calendarEl = document.getElementById('calendar-holder');
+
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        defaultView: 'dayGridMonth',
+                        editable: true,
+                        eventSources: [
+                            {
+                                url: "{{ path('fc_load_events') }}",
+                                method: "POST",
+                                extraParams: {
+                                    filters: JSON.stringify({})
+                                },
+                                failure: () => {
+                                    // alert("There was an error while fetching FullCalendar!");
+                                },
+                            },
+                        ],
+                        header: {
+                            left: 'prevYear,prev next,nextYear today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                        },
+                        plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
+                        timeZone: 'UTC',
+                    });
+                    calendar.render();
+                });
+            </script>
+
+
+        {% endblock %}
+    </body>
+</html>

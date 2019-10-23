@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <h1>Add an adress</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.streetNumber) }}
+    {{ form_row(form.streetName) }}
+    {{ form_row(form.city) }}
+    {{ form_row(form.country) }}
+    {#TODO Evol google api#}
+    {#{{ form_row(form.longitude) }}
+    {{ form_row(form.latitude) }}
+    {{ form_row(form.zip) }}#}
+
+    <div class="text-right">
+        <button type="submit" class="btn btn-primary">
+            add
+        </button>
+    </div>
+    {{  form_end(form) }}
+
+{% endblock %}
+

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Your artists{% endblock %}
+
+{% block body %}
+    h1>Edit an adress</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.streetNumber) }}
+    {{ form_row(form.streetName) }}
+    {{ form_row(form.city) }}
+    {{ form_row(form.country) }}
+    {{ form_row(form.longitude) }}
+    {{ form_row(form.latitude) }}
+    {{ form_row(form.zip) }}
+
+    <div class="text-right">
+        <button type="submit" class="btn btn-primary">
+            edit
+        </button>
+    </div>
+    {{  form_end(form) }}
+{% endblock %}
+
+{% block title %}
+    <
+{% endblock %}
+

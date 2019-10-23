@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Add a contact{% endblock %}
+
+{% block body %}
+    <h2 class="text-rose">Add a contact</h2>
+
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.website) }}
+    {{ form_row(form.language) }}
+    {{ form_row(form.note) }}
+
+    <h4 class="text-rose">Address</h4>
+    {{ form_row(form.location) }}
+
+
+    <div class="text-right">
+        <button type="submit" class="btn btn-white">
+            Add Contact
+        </button>
+    </div>
+    {{  form_end(form) }}
+{% endblock %}

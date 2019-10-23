@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ contact.name }}{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-rose">{{ contact.name }}</h1>
+    <p class="text-gray">{{ contact.email }}</p>
+    <p class="text-gray" >{{ contact.phone }}</p>
+    <p class="text-gray" >{{ contact.website }}</p>
+    <p class="text-gray" >{{ contact.language }}</p>
+    <p class="text-gray" >{{ contact.location.city }}</p>
+    <p class="text-gray" >{{ contact.location.country }}</p>
+    <p class="text-gray" >{{ contact.note }}</p>
+
+    <a href="{{ path('contact_edit', {'id': contact.id}) }}"
+       class="btn btn-white">
+        Edit Contact
+    </a>
+    <a href="{{ path('contact_delete', {'id': contact.id}) }}"
+       class="btn btn-secondary">
+        Delete Contact
+    </a>
+
+    {#TODO Contact event#}
+
+{% endblock %}
